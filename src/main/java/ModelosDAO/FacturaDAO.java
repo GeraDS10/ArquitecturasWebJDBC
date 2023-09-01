@@ -10,4 +10,5 @@ public interface FacturaDAO {
     public void eliminarFactura(int idFactura);
     public Factura obtenerFacturaPorId(int idFactura);
     public List obtenerFacturasPorIdCliente(int idCliente);
+    public List obtenerFacturas();
 }

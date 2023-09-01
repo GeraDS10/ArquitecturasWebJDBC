@@ -1,5 +1,14 @@
 package DAOFactory;
 
+import ModelosDAO.ClienteDAO;
+import ModelosDAO.FacturaDAO;
+import ModelosDAO.FacturaProductoDAO;
+import ModelosDAO.ProductoDAO;
+import MySQLDAO.MySQLClienteDAO;
+import MySQLDAO.MySQLFacturaDAO;
+import MySQLDAO.MySQLFacturaProductoDAO;
+import MySQLDAO.MySQLProductoDAO;
+
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,19 +18,43 @@ public class MySQLDAOFactory extends DAOFactory{
 
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     public static final String DBURL = "jdbc:mysql://localhost:3306/practicodb";
+    private static Connection conn = null;
 
     public static Connection createConnection() {
-        try {
-            Class.forName(DRIVER).getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
-            e.printStackTrace();
+        if (conn == null){
+            try {
+                Class.forName(DRIVER).getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                conn = DriverManager.getConnection(DBURL, "root", "1234");
+                conn.setAutoCommit(false);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            Connection conn = DriverManager.getConnection(DBURL, "root", "1234");
-            return conn;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+       return conn;
     }
+
+    @Override
+    public ClienteDAO getClienteDAO(){
+        return new MySQLClienteDAO();
+    }
+
+    @Override
+    public FacturaDAO getFacturaDAO(){
+        return new MySQLFacturaDAO();
+    }
+
+    @Override
+    public FacturaProductoDAO getFacturaProductoDAO(){
+        return new MySQLFacturaProductoDAO();
+    }
+
+    @Override
+    public ProductoDAO getProductoDAO(){
+        return new MySQLProductoDAO();
+    }
+
 }
