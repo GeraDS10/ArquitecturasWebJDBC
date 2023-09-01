@@ -5,6 +5,8 @@ import ModelosDAO.FacturaDAO;
 import ModelosDAO.FacturaProductoDAO;
 import ModelosDAO.ProductoDAO;
 
+import java.sql.Connection;
+
 public abstract class DAOFactory {
 
     public static DAOFactory createFactory(int type) {
@@ -16,6 +18,8 @@ public abstract class DAOFactory {
         }
         return null;
     }
+
+    public abstract Connection createConnection();
 
     public abstract ClienteDAO getClienteDAO();
     public abstract FacturaDAO getFacturaDAO();

@@ -20,7 +20,7 @@ public class MySQLDAOFactory extends DAOFactory{
     public static final String DBURL = "jdbc:mysql://localhost:3306/practicodb";
     private static Connection conn = null;
 
-    public static Connection createConnection() {
+    public Connection createConnection() {
         if (conn == null){
             try {
                 Class.forName(DRIVER).getDeclaredConstructor().newInstance();
@@ -39,22 +39,22 @@ public class MySQLDAOFactory extends DAOFactory{
 
     @Override
     public ClienteDAO getClienteDAO(){
-        return new MySQLClienteDAO();
+        return new MySQLClienteDAO(createConnection());
     }
 
     @Override
     public FacturaDAO getFacturaDAO(){
-        return new MySQLFacturaDAO();
+        return new MySQLFacturaDAO(createConnection());
     }
 
     @Override
     public FacturaProductoDAO getFacturaProductoDAO(){
-        return new MySQLFacturaProductoDAO();
+        return new MySQLFacturaProductoDAO(createConnection());
     }
 
     @Override
     public ProductoDAO getProductoDAO(){
-        return new MySQLProductoDAO();
+        return new MySQLProductoDAO(createConnection());
     }
 
 }

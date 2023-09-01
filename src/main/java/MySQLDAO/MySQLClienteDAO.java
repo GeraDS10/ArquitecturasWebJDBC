@@ -12,48 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLClienteDAO implements ClienteDAO {
-
-    public void crearTabla(){
-        /*
-        System.out.println("Chequeando tabla");
-        String select = "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'cliente')";
-        try{
-            Connection conn = MySQLDAOFactory.createConnection();
-            PreparedStatement ps = conn.prepareStatement(select);
-            ResultSet resultSet = ps.executeQuery();
-            System.out.println(resultSet.next());
-            if (!resultSet.next()){
-                System.out.println("Creando tabla Clientes");
-                crearTablaCliente(conn);
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-         */
-        Connection conn = MySQLDAOFactory.createConnection();
-        crearTablaCliente(conn);
+    private Connection conn = null;
+    public MySQLClienteDAO(Connection conn) {
+        this.conn = conn;
     }
 
-    private void crearTablaCliente(Connection conn){
-        String table = "CREATE TABLE cliente(" +
-                "id INT," +
-                "nombre VARCHAR(500)," +
-                "email VARCHAR(150)," +
-                "PRIMARY KEY(id))";
-        try {
-            conn.prepareStatement(table).execute();
-            conn.commit();
-            //conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     @Override
     public void insertarCliente(int id, String nombre, String email) {
         String insert = "INSERT INTO cliente(id, nombre, email) VALUES (?,?,?)";
         try {
-            Connection conn = MySQLDAOFactory.createConnection();
+            //Connection conn = MySQLDAOFactory.createConnection();
             PreparedStatement ps = conn.prepareStatement(insert);
             ps.setInt(1, id);
             ps.setString(2, nombre);
@@ -64,6 +32,17 @@ public class MySQLClienteDAO implements ClienteDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Cliente obtenerClienteMasFacturado() {
+        /*
+        SELECT SUM(f.idCliente) AS cantidadFacturas, c.nombre, c.idCliente, c.email FROM cliente c INNER JOIN factura f
+            on c.idCliente = f.idCliente
+        GROUP BY c.idCliente
+        ORDER BY cantidadFacturas DESC;
+         */
+        return null;
     }
 
     @Override
@@ -101,7 +80,7 @@ public class MySQLClienteDAO implements ClienteDAO {
         String insert = "SELECT * FROM cliente";
         ArrayList<Cliente> resultado = new ArrayList<>();
         try {
-            Connection conn = MySQLDAOFactory.createConnection();
+            //Connection conn = MySQLDAOFactory.createConnection();
             PreparedStatement ps = conn.prepareStatement(insert);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){

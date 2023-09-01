@@ -1,4 +1,6 @@
 import DAOFactory.DAOFactory;
+import Helpers.CreadorTablas;
+import Helpers.PobladorTablas;
 import Modelos.Cliente;
 import ModelosDAO.ClienteDAO;
 import MySQLDAO.MySQLClienteDAO;
@@ -13,29 +15,11 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        DAOFactory sql = DAOFactory.createFactory(1);
-        ClienteDAO tablaCliente = sql.getClienteDAO();
-        tablaCliente.crearTabla();
-        CSVParser parser = null;
-        try {
-            parser = CSVFormat.DEFAULT.withHeader().parse(new
-                    FileReader("C:\\Users\\Lolo\\Desktop\\dataPracticoArq\\productos.csv"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for(CSVRecord row: parser) {
-            tablaCliente.insertarCliente(Integer.parseInt(row.get("idProducto")),row.get("nombre"),row.get("valor"));
+        DAOFactory mySQL = DAOFactory.createFactory(1);
+        CreadorTablas tc = new CreadorTablas();
+        tc.crearTablas(mySQL.createConnection());
+        PobladorTablas tp = new PobladorTablas();
+        tp.poblarTablas(mySQL.createConnection());
 
-            /*System.out.println(row.get("idProducto"));
-            System.out.println(row.get("nombre"));
-            System.out.println(row.get("valor"));
-            System.out.println();
-            */
-            ArrayList<Cliente> clientes = tablaCliente.obtenerClientes();
-            for (Cliente c: clientes
-                 ) {
-                System.out.println(c);
-            }
-        }
     }
 }

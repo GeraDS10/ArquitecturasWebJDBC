@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface ClienteDAO {
 
-    public void crearTabla();
     public void insertarCliente(int id, String nombre, String email);
+
+    public Cliente obtenerClienteMasFacturado();
     public void eliminarCliente(int id);
     public void actualizarNombreCliente(String nombre);
     public void actualizarEmailCliente(String email);

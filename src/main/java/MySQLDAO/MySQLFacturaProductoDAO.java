@@ -1,14 +1,36 @@
 package MySQLDAO;
 
+import DAOFactory.MySQLDAOFactory;
 import Modelos.FacturaProducto;
 import ModelosDAO.FacturaProductoDAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class MySQLFacturaProductoDAO implements FacturaProductoDAO {
+
+    private Connection conn = null;
+
+    public MySQLFacturaProductoDAO(Connection conn) {
+        this.conn = conn;
+    }
+
     @Override
     public void insertarFacturaProducto(int idFactura, int idProducto, int cantidad) {
-
+        String insert = "INSERT INTO factura_producto(idFactura, idProducto, cantidad) VALUES (?,?,?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(insert);
+            ps.setInt(1, idFactura);
+            ps.setInt(2, idProducto);
+            ps.setInt(3,cantidad);
+            ps.executeUpdate();
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
