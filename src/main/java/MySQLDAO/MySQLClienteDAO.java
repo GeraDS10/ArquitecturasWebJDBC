@@ -57,34 +57,10 @@ public class MySQLClienteDAO implements ClienteDAO {
     }
 
     @Override
-    public void eliminarCliente(int id) {
-
-    }
-
-    @Override
-    public void actualizarNombreCliente(String nombre) {
-
-    }
-
-    @Override
-    public void actualizarEmailCliente(String email) {
-
-    }
-
-    @Override
     public Cliente obtenerClientePorId(int id) {
         return null;
     }
 
-    @Override
-    public Cliente obtenerClientePorEmail(String email) {
-        return null;
-    }
-
-    @Override
-    public Cliente obtenerClientePorNombre(String nombre) {
-        return null;
-    }
 
     @Override
     public ArrayList<Cliente> obtenerClientes() {

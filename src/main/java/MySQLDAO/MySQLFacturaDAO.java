@@ -7,6 +7,7 @@ import ModelosDAO.FacturaDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLFacturaDAO implements FacturaDAO {
@@ -34,11 +35,6 @@ public class MySQLFacturaDAO implements FacturaDAO {
     }
 
     @Override
-    public void eliminarFactura(int idFactura) {
-
-    }
-
-    @Override
     public Factura obtenerFacturaPorId(int idFactura) {
         return null;
     }
@@ -49,7 +45,7 @@ public class MySQLFacturaDAO implements FacturaDAO {
     }
 
     @Override
-    public List obtenerFacturas() {
+    public ArrayList<Factura> obtenerFacturas() {
         return null;
     }
 }

@@ -2,13 +2,16 @@ package DerbyDAO;
 
 import Modelos.Cliente;
 import ModelosDAO.ClienteDAO;
-import com.sun.jdi.connect.spi.Connection;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DerbyClienteDAO implements ClienteDAO {
 
-    private Connection conn;
+    private Connection conn = null;
 
     public DerbyClienteDAO(Connection conn) {
         this.conn = conn;
@@ -21,41 +24,66 @@ public class DerbyClienteDAO implements ClienteDAO {
 
     @Override
     public Cliente obtenerClienteMasFacturado() {
-        return null;
-    }
-
-    @Override
-    public void eliminarCliente(int id) {
-
-    }
-
-    @Override
-    public void actualizarNombreCliente(String nombre) {
-
-    }
-
-    @Override
-    public void actualizarEmailCliente(String email) {
-
+        String select = "SELECT c.idCliente, c.nombre, c.email, COUNT(f.idFactura) AS cantidadFacturas " +
+                "FROM cliente c " +
+                "INNER JOIN factura f ON c.idCliente = f.idCliente " +
+                "GROUP BY c.idCliente, c.nombre, c.email " +
+                "ORDER BY cantidadFacturas DESC " +
+                "FETCH FIRST ROW ONLY ";
+        Cliente cliente = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                cliente = new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cliente;
     }
 
     @Override
     public Cliente obtenerClientePorId(int id) {
-        return null;
-    }
-
-    @Override
-    public Cliente obtenerClientePorEmail(String email) {
-        return null;
-    }
-
-    @Override
-    public Cliente obtenerClientePorNombre(String nombre) {
-        return null;
+        String select = " SELECT c.nombre, c.idCliente, c.email " +
+                " FROM cliente c " +
+                " WHERE c.id = " +
+                id;
+        Cliente cliente = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                cliente = new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cliente;
     }
 
     @Override
     public ArrayList obtenerClientes() {
-        return null;
+
+        String select = " SELECT *" +
+                        "FROM cliente ";
+        ArrayList<Cliente> clientes = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                Cliente c = new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3));
+                clientes.add(c);
+            }
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return clientes;
     }
 }

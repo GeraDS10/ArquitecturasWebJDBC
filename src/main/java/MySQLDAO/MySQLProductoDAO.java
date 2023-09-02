@@ -59,17 +59,7 @@ public class MySQLProductoDAO implements ProductoDAO {
     }
 
     @Override
-    public void eliminarProducto(int idProducto) {
-
-    }
-
-    @Override
     public float obtenerValorPorId(int idProducto) {
-        return 0;
-    }
-
-    @Override
-    public float obtenerValorPorNombre(String nombre) {
         return 0;
     }
 

@@ -1,12 +1,14 @@
 package MySQLDAO;
 
 import DAOFactory.MySQLDAOFactory;
+import Modelos.Factura;
 import Modelos.FacturaProducto;
 import ModelosDAO.FacturaProductoDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLFacturaProductoDAO implements FacturaProductoDAO {
@@ -34,11 +36,6 @@ public class MySQLFacturaProductoDAO implements FacturaProductoDAO {
     }
 
     @Override
-    public void eliminarFacturaProducto(int idFactura) {
-
-    }
-
-    @Override
     public FacturaProducto obtenerFacturaProductoPorIdFactura(int idFactura) {
         return null;
     }
@@ -51,5 +48,10 @@ public class MySQLFacturaProductoDAO implements FacturaProductoDAO {
     @Override
     public int obtenerCantidadProductosDeFactura(int idFactura) {
         return 0;
+    }
+
+    @Override
+    public ArrayList<Factura> obtenerFacturas() {
+        return null;
     }
 }

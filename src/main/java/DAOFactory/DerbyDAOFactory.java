@@ -1,5 +1,9 @@
 package DAOFactory;
 
+import DerbyDAO.DerbyClienteDAO;
+import DerbyDAO.DerbyFacturaDAO;
+import DerbyDAO.DerbyFacturaProductoDAO;
+import DerbyDAO.DerbyProductoDAO;
 import ModelosDAO.ClienteDAO;
 import ModelosDAO.FacturaDAO;
 import ModelosDAO.FacturaProductoDAO;
@@ -11,38 +15,47 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DerbyDAOFactory extends DAOFactory{
+
+    private Connection conn = null;
     @Override
     public Connection createConnection() {
-        Connection conn = null;
-        String driver = "org.apache.derby.jdbc.EmbeddedDriver";
-        String uri = "jdbc:derby:MyDerbyDB;create=true";
-        try {
-            Class.forName(driver).getDeclaredConstructor().newInstance();
-            conn = DriverManager.getConnection(uri);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException |
-                 InvocationTargetException | SQLException e) {
-            throw new RuntimeException(e);
+        if(conn == null){
+            String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+            String uri = "jdbc:derby:MyDerbyDB;create=true";
+            try {
+                Class.forName(driver).getDeclaredConstructor().newInstance();
+                conn = DriverManager.getConnection(uri);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException |
+                    InvocationTargetException | SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return conn;
         }
-        return conn;
+        else {
+            return conn;
+        }
     }
 
     @Override
     public ClienteDAO getClienteDAO() {
-        return null;
+        return new DerbyClienteDAO(createConnection());
     }
 
     @Override
     public FacturaDAO getFacturaDAO() {
-        return null;
+
+        return new DerbyFacturaDAO(createConnection());
     }
 
     @Override
     public ProductoDAO getProductoDAO() {
-        return null;
+
+        return new DerbyProductoDAO(createConnection());
     }
 
     @Override
     public FacturaProductoDAO getFacturaProductoDAO() {
-        return null;
+
+        return new DerbyFacturaProductoDAO(createConnection());
     }
 }

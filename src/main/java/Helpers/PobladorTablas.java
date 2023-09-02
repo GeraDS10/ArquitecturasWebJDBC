@@ -12,18 +12,18 @@ import java.sql.SQLException;
 
 public class PobladorTablas {
 
-    public void poblarTablas(Connection conn){
-        poblarTablaCliente(conn);
-        poblarTablaFactura(conn);
-        poblarTablaProducto(conn);
-        poblarTablaFacturaProducto(conn);
+    public void poblarTablas(Connection conn, String ubicacion){
+        poblarTablaCliente(conn, ubicacion);
+        poblarTablaFactura(conn, ubicacion);
+        poblarTablaProducto(conn, ubicacion);
+        poblarTablaFacturaProducto(conn, ubicacion);
     }
 
-    private void poblarTablaCliente(Connection conn){
+    private void poblarTablaCliente(Connection conn, String ubicacion){
         CSVParser parser = null;
         try {
             parser = CSVFormat.DEFAULT.withHeader().parse(new
-                    FileReader("C:\\Users\\gerar\\Desktop\\Practico_1\\clientes.csv"));
+                    FileReader(ubicacion + "\\clientes.csv"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,11 +43,11 @@ public class PobladorTablas {
         }
     }
 
-    private void poblarTablaFactura(Connection conn){
+    private void poblarTablaFactura(Connection conn, String ubicacion){
         CSVParser parser = null;
         try {
             parser = CSVFormat.DEFAULT.withHeader().parse(new
-                    FileReader("C:\\Users\\gerar\\Desktop\\Practico_1\\facturas.csv"));
+                    FileReader(ubicacion + "\\facturas.csv"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,11 +66,11 @@ public class PobladorTablas {
         }
     }
 
-    private void poblarTablaProducto(Connection conn){
+    private void poblarTablaProducto(Connection conn, String ubicacion){
         CSVParser parser = null;
         try {
             parser = CSVFormat.DEFAULT.withHeader().parse(new
-                    FileReader("C:\\Users\\gerar\\Desktop\\Practico_1\\productos.csv"));
+                    FileReader(ubicacion + "\\productos.csv"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,11 +90,11 @@ public class PobladorTablas {
         }
     }
 
-    private void poblarTablaFacturaProducto(Connection conn){
+    private void poblarTablaFacturaProducto(Connection conn, String ubicacion){
         CSVParser parser = null;
         try {
             parser = CSVFormat.DEFAULT.withHeader().parse(new
-                    FileReader("C:\\Users\\gerar\\Desktop\\Practico_1\\facturas-productos.csv"));
+                    FileReader(ubicacion + "\\facturas-productos.csv"));
         } catch (IOException e) {
             e.printStackTrace();
         }
