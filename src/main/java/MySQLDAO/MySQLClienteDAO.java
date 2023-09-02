@@ -21,7 +21,6 @@ public class MySQLClienteDAO implements ClienteDAO {
     public void insertarCliente(int id, String nombre, String email) {
         String insert = "INSERT INTO cliente(id, nombre, email) VALUES (?,?,?)";
         try {
-            //Connection conn = MySQLDAOFactory.createConnection();
             PreparedStatement ps = conn.prepareStatement(insert);
             ps.setInt(1, id);
             ps.setString(2, nombre);
@@ -36,13 +35,25 @@ public class MySQLClienteDAO implements ClienteDAO {
 
     @Override
     public Cliente obtenerClienteMasFacturado() {
-        /*
-        SELECT SUM(f.idCliente) AS cantidadFacturas, c.nombre, c.idCliente, c.email FROM cliente c INNER JOIN factura f
-            on c.idCliente = f.idCliente
-        GROUP BY c.idCliente
-        ORDER BY cantidadFacturas DESC;
-         */
-        return null;
+        String select = " SELECT SUM(f.idCliente) AS cantidadFacturas, c.nombre, c.idCliente, c.email " +
+                            " FROM cliente c INNER JOIN factura f " +
+                                " on c.idCliente = f.idCliente " +
+                                    " GROUP BY c.idCliente " +
+                                        " ORDER BY cantidadFacturas DESC " +
+                                            " LIMIT 1 ";
+        Cliente cliente = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                cliente = new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cliente;
     }
 
     @Override
@@ -80,14 +91,12 @@ public class MySQLClienteDAO implements ClienteDAO {
         String insert = "SELECT * FROM cliente";
         ArrayList<Cliente> resultado = new ArrayList<>();
         try {
-            //Connection conn = MySQLDAOFactory.createConnection();
             PreparedStatement ps = conn.prepareStatement(insert);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 Cliente c = new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3));
                 resultado.add(c);
             }
-            //conn.close();
             ps.close();
             conn.commit();
         } catch (SQLException e) {

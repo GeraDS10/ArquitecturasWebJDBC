@@ -1,11 +1,13 @@
 package MySQLDAO;
 
 import DAOFactory.MySQLDAOFactory;
+import Modelos.Cliente;
 import Modelos.Producto;
 import ModelosDAO.ProductoDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -35,15 +37,25 @@ public class MySQLProductoDAO implements ProductoDAO {
 
     @Override
     public Producto obtenerProductoMayorRecaudacion() {
-        //Producto resultado = new Producto();
-        /*
-        SELECT p.idProducto, p.nombre, p.valor, SUM(fp.cantidad) * p.valor AS recaudacion
-            FROM factura_producto fp INNER JOIN producto p
-                on fp.idProducto = p.idProducto
-            GROUP BY p.idProducto
-            ORDER BY recaudacion DESC;
-         */
-        return null;
+        String select = " SELECT p.idProducto, p.nombre, p.valor, SUM(fp.cantidad) * p.valor AS recaudacion " +
+                            " FROM factura_producto fp INNER JOIN producto p " +
+                                " on fp.idProducto = p.idProducto " +
+                                    " GROUP BY p.idProducto " +
+                                         " ORDER BY recaudacion DESC " +
+                                            " LIMIT 1 ";
+        Producto producto = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                producto = new Producto(rs.getInt(1), rs.getString(2), rs.getFloat(3));
+            }
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return producto;
     }
 
     @Override
