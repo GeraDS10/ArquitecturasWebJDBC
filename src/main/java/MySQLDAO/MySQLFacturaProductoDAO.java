@@ -1,15 +1,12 @@
 package MySQLDAO;
 
-import DAOFactory.MySQLDAOFactory;
-import Modelos.Factura;
 import Modelos.FacturaProducto;
 import ModelosDAO.FacturaProductoDAO;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MySQLFacturaProductoDAO implements FacturaProductoDAO {
 
@@ -37,21 +34,64 @@ public class MySQLFacturaProductoDAO implements FacturaProductoDAO {
 
     @Override
     public FacturaProducto obtenerFacturaProductoPorIdFactura(int idFactura) {
-        return null;
+        String select = "SELECT fp.idFactura, fp.idProducto, fp.cantidad" +
+                "FROM factura_producto fp" +
+                "WHERE fp.idFactura = " + idFactura;
+        FacturaProducto fp = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                fp = new FacturaProducto(rs.getInt(1), rs.getInt(2), rs.getInt(3));
+
+            }
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fp;
     }
 
     @Override
-    public List obtenerFacturaProductoPorIdProducto(int idProducto) {
-        return null;
+    public ArrayList<FacturaProducto> obtenerFacturaProductoPorIdProducto(int idProducto) {
+        String select = "SELECT fp.idFactura, fp.idProducto, fp.cantidad" +
+                "FROM factura_producto fp" +
+                "WHERE fp.idFactura = " + idProducto;
+        ArrayList<FacturaProducto> fp = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                FacturaProducto f = new FacturaProducto(rs.getInt(1), rs.getInt(2), rs.getInt(3));
+                fp.add(f);
+            }
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fp;
     }
 
     @Override
-    public int obtenerCantidadProductosDeFactura(int idFactura) {
-        return 0;
-    }
-
-    @Override
-    public ArrayList<Factura> obtenerFacturas() {
-        return null;
+    public ArrayList<FacturaProducto> obtenerFacturas() {
+        String select = "SELECT * " +
+                "FROM factura_producto";
+        ArrayList<FacturaProducto> fp = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                FacturaProducto f = new FacturaProducto(rs.getInt(1), rs.getInt(2), rs.getInt(3));
+                fp.add(f);
+            }
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fp;
     }
 }
+

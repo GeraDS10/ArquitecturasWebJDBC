@@ -13,11 +13,6 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
 
-        DAOFactory mySQL = DAOFactory.createFactory(1);
-        ClienteDAO cDAO = mySQL.getClienteDAO();
-        cDAO.eliminarCliente(1);
-
-
         //Factory MySQL
         //DAOFactory mySQL = DAOFactory.createFactory(1);
 
@@ -25,7 +20,7 @@ public class Main {
         //DAOFactory derby = DAOFactory.createFactory(2);
 
 
-        // Tablas MySQL -->
+        // Creacion y poblar Tablas MySQL (PRESUPONEN DB LLAMADA practicodb -->
         /*
         //String ubicacion = "ubicacion carpeta contenedora archivos ccv";
         CreadorTablas tc = new CreadorTablas();
@@ -40,9 +35,14 @@ public class Main {
 
         // Consultas MySQL -->
         /*
+
+         // Punto 3 práctico
+
         ClienteDAO cDAO = mySQL.getClienteDAO();
         Cliente cliente = cDAO.obtenerClienteMasFacturado();
         System.out.println( "Cliente id: " + cliente.getId() + "\n" + "Nombre: " + cliente.getNombre() + "\n" + "Email: " + cliente.getEmail() );
+
+        // Punto 4 práctico
 
         ProductoDAO pDAO = mySQL.getProductoDAO();
         Producto producto = pDAO.obtenerProductoMayorRecaudacion();
@@ -50,7 +50,7 @@ public class Main {
          */
 
 
-        // Tablas Derby -->
+        // Crear y poblar Tablas Derby -->
          /*
        CreadorTablas tc = new CreadorTablas();
         tc.crearTablas(derby.createConnection());
@@ -62,10 +62,14 @@ public class Main {
 
         // Consultas Derby -->
         /*
+
+        // Punto 3 práctico
          ClienteDAO DerbyClienteDAO = derby.getClienteDAO();
         Cliente clienteDerby = DerbyClienteDAO.obtenerClienteMasFacturado();
         System.out.println( "Cliente id: " + clienteDerby.getId() + "\n" + "Nombre: " + clienteDerby.getNombre() + "\n" + "Email: " + clienteDerby.getEmail() );
 
+
+        // Punto 4 práctico
         ProductoDAO DerbyProductoDAO = derby.getProductoDAO();
         Producto productoDerby = DerbyProductoDAO.obtenerProductoMayorRecaudacion();
         System.out.println( "Producto id: " + productoDerby.getIdProducto() + "\n" + "Nombre: " + productoDerby.getNombre() + "\n" + "Valor: " + productoDerby.getValor() );

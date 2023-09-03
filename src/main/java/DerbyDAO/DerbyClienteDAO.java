@@ -2,7 +2,6 @@ package DerbyDAO;
 
 import Modelos.Cliente;
 import ModelosDAO.ClienteDAO;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +18,18 @@ public class DerbyClienteDAO implements ClienteDAO {
 
     @Override
     public void insertarCliente(int id, String nombre, String email) {
-
+        String insert = "INSERT INTO cliente(id, nombre, email) VALUES (?,?,?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(insert);
+            ps.setInt(1, id);
+            ps.setString(2, nombre);
+            ps.setString(3, email);
+            ps.executeUpdate();
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package ModelosDAO;
 
 import Modelos.Producto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ProductoDAO {
@@ -10,7 +11,5 @@ public interface ProductoDAO {
 
     public Producto obtenerProductoMayorRecaudacion();
     public float obtenerValorPorId(int idProducto);
-    public List obtenerProductos();
-
-    //Considerar -> actualizar Precio / actualizar Nombre
+    public ArrayList<Producto> obtenerProductos();
 }

@@ -1,15 +1,13 @@
 package MySQLDAO;
 
-import DAOFactory.MySQLDAOFactory;
+
 import Modelos.Cliente;
 import ModelosDAO.ClienteDAO;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MySQLClienteDAO implements ClienteDAO {
     private Connection conn = null;
@@ -58,16 +56,31 @@ public class MySQLClienteDAO implements ClienteDAO {
 
     @Override
     public Cliente obtenerClientePorId(int id) {
-        return null;
+        String select = " SELECT c.idCliente" +
+                "FROM cliente c" +
+                "WHERE c.idCliente = " + id;
+        Cliente cliente = null;
+        try {
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                cliente = new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cliente;
     }
 
 
     @Override
     public ArrayList<Cliente> obtenerClientes() {
-        String insert = "SELECT * FROM cliente";
+        String select = "SELECT * FROM cliente";
         ArrayList<Cliente> resultado = new ArrayList<>();
         try {
-            PreparedStatement ps = conn.prepareStatement(insert);
+            PreparedStatement ps = conn.prepareStatement(select);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 Cliente c = new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3));

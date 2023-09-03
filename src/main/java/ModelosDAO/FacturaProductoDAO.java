@@ -10,7 +10,6 @@ public interface FacturaProductoDAO {
 
     public void insertarFacturaProducto(int idFactura, int idProducto, int cantidad);
     public FacturaProducto obtenerFacturaProductoPorIdFactura(int idFactura);
-    public List obtenerFacturaProductoPorIdProducto(int idProducto);
-    public int obtenerCantidadProductosDeFactura(int idFactura);
-    public ArrayList<Factura> obtenerFacturas();
+    public ArrayList<FacturaProducto> obtenerFacturaProductoPorIdProducto(int idProducto);
+    public ArrayList<FacturaProducto> obtenerFacturas();
 }
